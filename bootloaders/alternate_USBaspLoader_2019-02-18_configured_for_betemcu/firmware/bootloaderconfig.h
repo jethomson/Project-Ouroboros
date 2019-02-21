@@ -99,6 +99,14 @@ these macros are defined, the boot loader uses them.
  * has occured during the timeout interval. If TIMEOUT_ENABLED is defined
  * to 0 this define will be ignored. Maximum value is 255 seconds.
  */
+#define POWER_ON_RESET_LOAD           1
+/* If POWER_ON_RESET_LOAD is defined as 1, then the bootloader will load
+ * when an external reset or a power on reset is detected. When this option
+ * is paired with TIMEOUT_ENABLED defined as 1 then zero hardware 
+ * modifications to the board are required. If POWER_ON_RESET_LOAD is defined
+ * as 0 then the bootloader only loads if an external reset is detected, but
+ * this requires adding a reset button to the board.  Costs ~6 bytes.
+ */
 #define USING_PUSHBUTTON           0
 /* If USING_PUSHBUTTON is defined to 1, then a press and release of a
  * pushbutton on the bootLoaderCondition() pin can be used to signal that
@@ -181,7 +189,12 @@ static inline void  bootLoaderInit(void)
 #if !TIMEOUT_ENABLED
     PORTD |= (1 << JUMPER_BIT);     /* activate pull-up */
 #endif
+
+#if POWER_ON_RESET_LOAD
+    if( !(MCUCSR & (1 << EXTRF) || MCUCSR & (1 << PORF)) )    /* If this was not an external reset or power on reset, ignore */
+#else
     if(!(MCUCSR & (1 << EXTRF)))    /* If this was not an external reset, ignore */
+#endif
         leaveBootloader();
     MCUCSR = 0;                     /* clear all reset flags for next time */
 }
