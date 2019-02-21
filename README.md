@@ -4,8 +4,9 @@ ATmega8 USBasp programmers available for cheap on eBay and aliexpress can be rep
 With three of the microcontrollers pins as well as power and ground connected to the programming header they are an inexpensive
 way to realize an embedded project.
 
-This repo contains USBaspLoader bootloaders modified to run on one of these programmers, and a few demo programs.
-I originally worked on this project in 2011, and updated my work in 2019. Visit the following link for an in depth write-up.
+This repo contains USBaspLoader bootloaders modified to run on one of these programmers, and a few demo programs. The alternate
+USBaspLoader timeout hex file requires no hardware modifications to the board to use it. I originally worked on this project in
+2011, and updated my work in 2019. Visit the following link for an in depth write-up.
 
 https://jethomson.wordpress.com/2011/08/18/project-ouroboros-reflashing-a-betemcu-usbasp-programmer/
 
@@ -13,5 +14,5 @@ N.B. These files use a fuse setting that sets the brown-out detection level appr
 
 **Summary of Methods to Enter Programming Mode**
 External programmer: connect the holes of J2 together for the duration of the program upload.
-Vanilla USBaspLoader: connect PD7 to ground, reset, upload program, disconnect PD7 from ground.
-Alternate USBaspLoader: 1) reset, upload program before bootloader times out. 2) press and hold PD7 pushbutton, reset, release PD7 pushbutton, upload program
+Vanilla USBaspLoader: connect PD7 to ground, bring the reset pin low, upload program, disconnect PD7 from ground.
+Alternate USBaspLoader: 1) cycle the power or bring the reset pin low then upload program before bootloader times out. 2) press and hold PD7 pushbutton, reset, release PD7 pushbutton, upload program
